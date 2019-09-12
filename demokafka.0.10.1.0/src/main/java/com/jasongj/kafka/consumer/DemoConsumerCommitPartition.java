@@ -11,11 +11,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import com.jasongj.kafka.ConstantConf;
 
 public class DemoConsumerCommitPartition {
 
 	public static void main(String[] args) throws Exception {
-		args = new String[] { "kafka0:9092", "topic1", "group2", "consumer2" };
+		args = new String[] { ConstantConf.KAFKA_BROKER, ConstantConf.TOPIC, "group2", "consumer2" };
 		if (args == null || args.length != 4) {
 			System.err.println(
 					"Usage:\n\tjava -jar kafka_consumer.jar ${bootstrap_server} ${topic_name} ${group_name} ${client_id}");

@@ -3,6 +3,7 @@ package com.jasongj.kafka.consumer;
 import java.util.Arrays;
 import java.util.Properties;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
@@ -11,7 +12,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 public class DemoConsumerAssign {
 
 	public static void main(String[] args) {
-		args = new String[] { "kafka0:9092", "topic1", "group1", "consumer3" };
+		args = new String[] { ConstantConf.KAFKA_BROKER, ConstantConf.TOPIC, "group11", "consumer3" };
 		if (args == null || args.length != 4) {
 			System.err.println(
 					"Usage:\n\tjava -jar kafka_consumer.jar ${bootstrap_server} ${topic_name} ${group_name} ${client_id}");
@@ -32,7 +33,10 @@ public class DemoConsumerAssign {
 		props.put("value.deserializer", StringDeserializer.class.getName());
 		props.put("auto.offset.reset", "earliest");
 		KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-		consumer.assign(Arrays.asList(new TopicPartition(topic, 0), new TopicPartition(topic, 1)));
+
+		consumer.assign(Arrays.asList(new TopicPartition(topic, 0), new TopicPartition(topic, 1), new TopicPartition(topic, 2)));//只订阅制定模块的partition
+//		consumer.assign(Arrays.asList(new TopicPartition(topic, 0)));//只订阅制定模块的partition
+
 		while (true) {
 			ConsumerRecords<String, String> records = consumer.poll(100);
 			records.forEach(record -> {

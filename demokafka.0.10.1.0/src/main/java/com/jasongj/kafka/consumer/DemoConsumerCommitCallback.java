@@ -10,11 +10,12 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import com.jasongj.kafka.ConstantConf;
 
 public class DemoConsumerCommitCallback {
 
 	public static void main(String[] args) throws Exception {
-		args = new String[] { "kafka0:9092", "topic1", "group11", "consumer2" };
+		args = new String[] { ConstantConf.KAFKA_BROKER, ConstantConf.TOPIC, "group11", "consumer2" };
 		if (args == null || args.length != 4) {
 			System.err.println(
 					"Usage:\n\tjava -jar kafka_consumer.jar ${bootstrap_server} ${topic_name} ${group_name} ${client_id}");
@@ -42,15 +43,16 @@ public class DemoConsumerCommitCallback {
 			records.forEach(record -> {
 				System.out.printf("client : %s , topic: %s , partition: %d , offset = %d, key = %s, value = %s%n",
 						clientid, record.topic(), record.partition(), record.offset(), record.key(), record.value());
-				if (atomicLong.get() % 10 == 0)
+				if (atomicLong.get() % 10 == 0) {
 					consumer.commitAsync((Map<TopicPartition, OffsetAndMetadata> offsets, Exception exception) -> {
-						offsets.forEach((TopicPartition partition, OffsetAndMetadata offset) -> 
-							System.out.printf("Commit %s-%d-%d %n", partition.topic(), partition.partition(), offset.offset())
+						offsets.forEach((TopicPartition partition, OffsetAndMetadata offset) ->
+								System.out.printf("Commit %s-%d-%d %n", partition.topic(), partition.partition(), offset.offset())
 						);
-						if(null != null ) {
+						if (null != null) {
 							exception.printStackTrace();
 						}
 					});
+				}
 			});
 		}
 	}

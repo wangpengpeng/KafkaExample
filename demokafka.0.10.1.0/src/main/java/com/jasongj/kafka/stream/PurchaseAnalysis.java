@@ -3,6 +3,7 @@ package com.jasongj.kafka.stream;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
@@ -24,7 +25,7 @@ public class PurchaseAnalysis {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		Properties props = new Properties();
 		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-purchase-analysis2");
-		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka0:19092");
+		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, ConstantConf.KAFKA_BROKER);
 		props.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "zookeeper0:12181/kafka");
 		props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());

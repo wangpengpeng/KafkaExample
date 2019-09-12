@@ -3,6 +3,7 @@ package com.jasongj.kafka.stream;
 import java.util.Arrays;
 import java.util.Properties;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -18,14 +19,14 @@ public class WordCountDSL {
 	public static void main(String[] args) throws InterruptedException {
 		Properties props = new Properties();
 		props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-wordcount-dsl");
-		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka0:19092");
+		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, ConstantConf.KAFKA_BROKER);
 		props.put(StreamsConfig.ZOOKEEPER_CONNECT_CONFIG, "zookeeper0:12181/kafka");
 		props.put(StreamsConfig.KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(StreamsConfig.VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		KStreamBuilder builder = new KStreamBuilder();
-		KStream<String, String> stream = builder.stream("words");
+		KStream<String, String> stream = builder.stream(ConstantConf.TOPIC);
 //		stream.flatMapValues(values -> Arrays.asList(values.toLowerCase().split(" ")))
 //				.map((k, v) -> KeyValue.<String, String>pair(v, v)).groupByKey().aggregate(
 //						() -> 0L,

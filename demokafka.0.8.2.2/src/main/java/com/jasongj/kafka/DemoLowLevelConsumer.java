@@ -12,13 +12,19 @@ import kafka.message.MessageAndOffset;
 public class DemoLowLevelConsumer {
 
 	public static void main(String[] args) throws Exception {
-		final String topic = "topic1";
+		final String topic = ConstantConf.TOPIC;
 		String clientID = "DemoLowLevelConsumer1";
-		SimpleConsumer simpleConsumer = new SimpleConsumer("kafka0", 9092, 100000, 64 * 1000000, clientID);
-		FetchRequest req = new FetchRequestBuilder().clientId(clientID)
-				.addFetch(topic, 0, 0L, 50).addFetch(topic, 1, 0L, 5000).addFetch(topic, 2, 0L, 1000000).build();
+
+		SimpleConsumer simpleConsumer = new SimpleConsumer("gtdata-test03", 9092, 100000, 64 * 1000000, clientID);
+		FetchRequest req = new FetchRequestBuilder()
+				.clientId(clientID)
+				.addFetch(topic, 0, 0L, 50)
+				.addFetch(topic, 1, 0L, 5000)
+				.addFetch(topic, 2, 0L, 1000000).build();
+
 		FetchResponse fetchResponse = simpleConsumer.fetch(req);
 		ByteBufferMessageSet messageSet = (ByteBufferMessageSet) fetchResponse.messageSet(topic, 0);
+
 		for (MessageAndOffset messageAndOffset : messageSet) {
 			ByteBuffer payload = messageAndOffset.message().payload();
 			long offset = messageAndOffset.offset();

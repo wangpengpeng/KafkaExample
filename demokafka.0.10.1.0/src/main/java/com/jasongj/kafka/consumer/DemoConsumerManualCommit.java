@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.DoubleDeserializer;
@@ -12,7 +13,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 public class DemoConsumerManualCommit {
 
 	public static void main(String[] args) throws Exception {
-		args = new String[] { "kafka0:19092", "gender-amount", "group4", "consumer2" };
+		args = new String[] { ConstantConf.KAFKA_BROKER, "gender-amount", "group4", "consumer2" };
 		if (args == null || args.length != 4) {
 			System.err.println(
 					"Usage:\n\tjava -jar kafka_consumer.jar ${bootstrap_server} ${topic_name} ${group_name} ${client_id}");

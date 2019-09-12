@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -13,7 +14,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 public class DemoConsumerRebalance {
 
 	public static void main(String[] args) {
-		args = new String[] { "kafka0:9092", "topic1", "group1", "consumer1" };
+		args = new String[] { ConstantConf.KAFKA_BROKER, ConstantConf.TOPIC, "group1", "consumer1" };
+
 		if (args == null || args.length != 4) {
 			System.err.println(
 					"Usage:\n\tjava -jar kafka_consumer.jar ${bootstrap_server} ${topic_name} ${group_name} ${client_id}");

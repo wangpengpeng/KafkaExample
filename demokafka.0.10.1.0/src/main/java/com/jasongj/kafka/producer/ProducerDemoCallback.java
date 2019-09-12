@@ -2,6 +2,7 @@ package com.jasongj.kafka.producer;
 
 import java.util.Properties;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -11,7 +12,7 @@ public class ProducerDemoCallback {
 
 	public static void main(String[] args) throws Exception {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "kafka0:9092");
+		props.put("bootstrap.servers", ConstantConf.KAFKA_BROKER);
 		props.put("acks", "all");
 		props.put("retries", 3);
 		props.put("batch.size", 16384);
@@ -23,7 +24,7 @@ public class ProducerDemoCallback {
 
 		Producer<String, String> producer = new KafkaProducer<String, String>(props);
 		for (int i = 0; i < 10; i++) {
-			ProducerRecord record = new ProducerRecord<String, String>("topic1", Integer.toString(i),
+			ProducerRecord record = new ProducerRecord<String, String>(ConstantConf.TOPIC, Integer.toString(i),
 					Integer.toString(i));
 //			producer.send(record);
 //			producer.send(record, new Callback() {
@@ -38,9 +39,9 @@ public class ProducerDemoCallback {
 //			});
 			 producer.send(record, (metadata, exception) -> {
 				 if(metadata != null) {
-					 System.out.printf("Send record partition:%d, offset:%d, keysize:%d, valuesize:%d %n",
+					 System.out.printf("Send record partition:%d, offset:%d, keysize:%d, valuesize:%d, message:%s %n",
 								metadata.partition(), metadata.offset(), metadata.serializedKeySize(),
-								metadata.serializedValueSize());
+								metadata.toString());
 				 }
 				 if(exception != null) {
 					 exception.printStackTrace();

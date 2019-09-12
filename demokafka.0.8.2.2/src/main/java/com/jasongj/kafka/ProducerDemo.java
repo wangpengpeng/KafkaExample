@@ -9,8 +9,9 @@ import kafka.serializer.StringEncoder;
 
 public class ProducerDemo {
 
-  static private final String TOPIC = "topic1";
-  static private final String BROKER_LIST = "kafka0:9092";
+  static private final String TOPIC = ConstantConf.TOPIC;
+
+  static private final String BROKER_LIST = "gtdata-test04:9092,gtdata-test05:9092,gtdata-test06:9092";
 
 
   public static void main(String[] args) throws Exception {
@@ -23,7 +24,7 @@ public class ProducerDemo {
     props.put("metadata.broker.list", BROKER_LIST);
     // props.put("serializer.class", "kafka.serializer.StringEncoder");
     props.put("serializer.class", StringEncoder.class.getName());
-    props.put("partitioner.class", HashPartitioner.class.getName());
+    props.put("partitioner.class", HashPartitioner.class.getName()); //自定义分区类型。
 //    props.put("compression.codec", "0");
     props.put("producer.type", "sync");
     props.put("batch.num.messages", "1");
@@ -38,6 +39,7 @@ public class ProducerDemo {
 
   public static void sendOne(Producer<String, String> producer, String topic) throws InterruptedException {
 	boolean sleepFlag = false;
+
     KeyedMessage<String, String> message1 = new KeyedMessage<String, String>(topic, "0", "test 0");
     producer.send(message1);
     if(sleepFlag) Thread.sleep(5000);
@@ -65,6 +67,8 @@ public class ProducerDemo {
     KeyedMessage<String, String> message9 = new KeyedMessage<String, String>(topic, "8", "test 8");
     producer.send(message9);
     if(sleepFlag) Thread.sleep(5000);
+
+
     producer.close();
   }
 

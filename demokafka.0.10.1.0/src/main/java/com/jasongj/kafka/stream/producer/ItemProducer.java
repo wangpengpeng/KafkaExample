@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import com.jasongj.kafka.ConstantConf;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -21,7 +22,7 @@ public class ItemProducer {
 	
 	public static void main(String[] args) throws Exception {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "kafka0:19092");
+		props.put("bootstrap.servers", ConstantConf.KAFKA_BROKER);
 		props.put("acks", "all");
 		props.put("retries", 3);
 		props.put("batch.size", 16384);

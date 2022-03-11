@@ -23,39 +23,38 @@ public class DemoConsumerFlowControl {
 		String bootstrap = args[0];
 		String topic = args[1];
 		String groupid = args[2];
-		String clientid = args[3];
 
 		Properties props = new Properties();
 		props.put("bootstrap.servers", bootstrap);
 		props.put("group.id", groupid);
-		props.put("client.id", clientid);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
 		props.put("key.deserializer", StringDeserializer.class.getName());
 		props.put("value.deserializer", StringDeserializer.class.getName());
 		props.put("auto.offset.reset", "earliest");
 		KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-		consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener(){
 
+		consumer.subscribe(Arrays.asList(topic), new ConsumerRebalanceListener(){
 			@Override
 			public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
 				partitions.forEach(topicPartition -> {
-					System.out.printf("Revoked partition for client %s : %s-%s %n", clientid, topicPartition.topic(), topicPartition.partition());
+					System.out.printf("Revoked partition for  : %s-%s %n", topicPartition.topic(), topicPartition.partition());
 				});
 			}
 
 			@Override
 			public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
 				partitions.forEach(topicPartition -> {
-					System.out.printf("Assigned partition for client %s : %s-%s %n", clientid, topicPartition.topic(), topicPartition.partition());
+					System.out.printf("Assigned partition for  : %s-%s %n", topicPartition.topic(), topicPartition.partition());
 				});
 			}});
+
 		while (true) {
-			ConsumerRecords<String, String> records = consumer.poll(100000000);
+			ConsumerRecords<String, String> records = consumer.poll(100);
 			consumer.pause(Arrays.asList(new TopicPartition(topic, 0)));
 			consumer.pause(Arrays.asList(new TopicPartition(topic, 1)));
 			records.forEach(record -> {
-				System.out.printf("client : %s , topic: %s , partition: %d , offset = %d, key = %s, value = %s%n", clientid, record.topic(),
+				System.out.printf(" topic: %s , partition: %d , offset = %d, key = %s, value = %s%n", record.topic(),
 						record.partition(), record.offset(), record.key(), record.value());
 			});
 		}

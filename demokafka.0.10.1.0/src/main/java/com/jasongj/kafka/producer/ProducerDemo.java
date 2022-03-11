@@ -25,9 +25,15 @@ public class ProducerDemo {
 		props.put("interceptor.classes", EvenProducerInterceptor.class.getName());
 
 		System.out.println( EvenProducerInterceptor.class.getName() +  HashPartitioner.class.getName());
+
 		Producer<String, String> producer = new KafkaProducer<String, String>(props);
-		for (int i = 0; i < 10; i++)
-			producer.send(new ProducerRecord<String, String>(ConstantConf.TOPIC, Integer.toString(i), Integer.toString(i)));
+
+		for (int i = 0; i < 1000; i++){
+//			producer.send(new ProducerRecord<String, String>(ConstantConf.TOPIC, Integer.toString(i), Integer.toString(i)));
+//			producer.send(new ProducerRecord<String, String>("feed_video_test", Integer.toString(i), Integer.toString(i)));
+			producer.send(new ProducerRecord<String, String>("test", Integer.toString(i), Integer.toString(i)));
+			Thread.sleep(500);
+		}
 		producer.close();
 	}
 

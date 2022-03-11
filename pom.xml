@@ -13,6 +13,7 @@
 	<modules>
 		<module>demokafka.0.8.2.2</module>
 		<module>demokafka.0.10.1.0</module>
+		<module>demokafka.2.1</module>
 	</modules>
 
 	<properties>
